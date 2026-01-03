@@ -8,10 +8,8 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: [
-    'http://localhost:4200',
-    'https://formularioconback.netlify.app'
-  ]
+  origin: '*',
+  methods: ['GET', 'POST']
 }));
 
 app.use(express.json());
