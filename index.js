@@ -14,15 +14,8 @@ app.use(cors({
 
 app.use(express.json());
 
-// Conexión a MySQL
-const db = mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT
-});
-
+// Conexión MySQL (Railway)
+const db = mysql.createConnection(process.env.MYSQL_URL);
 
 db.connect(err => {
   if (err) {
@@ -37,15 +30,12 @@ app.get('/', (req, res) => {
   res.send('API funcionando');
 });
 
-// Ruta para guardar contacto
+// Guardar contacto
 app.post('/contacto', (req, res) => {
   const { nombre, email, mensaje } = req.body;
 
-  // Validación backend (obligatoria)
   if (!nombre || !email || !mensaje) {
-    return res.status(400).json({
-      error: 'Datos incompletos'
-    });
+    return res.status(400).json({ error: 'Datos incompletos' });
   }
 
   const sql = `
@@ -67,7 +57,7 @@ app.post('/contacto', (req, res) => {
   });
 });
 
-// Levantar servidor
+// Puerto
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
